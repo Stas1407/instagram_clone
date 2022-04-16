@@ -8,8 +8,11 @@ import {
   MenuIcon,
   HomeIcon
 } from '@heroicons/react/outline'
+import { useSession, signIn, signOut } from 'next-auth/react'
 
 function Header() {
+  const {data: session} = useSession();
+
   return (
     <div className='shadow-sm border-b bg-white sticky top-0 z-50'>
       <div className='flex justify-between max-w-6xl mx-5 px-2 xl:mx-auto'>
@@ -43,17 +46,22 @@ function Header() {
           <HomeIcon className='navBtn'/>
           <MenuIcon className='h-6 md:hidden cursor-pointer'/>
 
-          <div className='navBtn relative mb-1'>
-            <PaperAirplaneIcon className='navBtn rotate-45 mb-1 ml-1' />
-            <div className='absolute -top-1 -right-1 text-xs w-4 h-4 bg-red-400 rounded-full flex 
-            items-center justify-center animate-pulse text-white'>3</div>
-          </div>
-          <PlusCircleIcon className='navBtn' />
-          <UserGroupIcon className='navBtn' />
-          <HeartIcon className='navBtn' />
-          <div className='relative h-10 w-10 cursor-pointer'>
-            <Image src="/ara.jpg" layout='fill' objectFit='cover' className='rounded-full'/>
-          </div>
+          {session ? (
+            <>
+              <div className='navBtn relative mb-1'>
+                <PaperAirplaneIcon className='navBtn rotate-45 mb-1 ml-1' />
+                <div className='absolute -top-1 -right-1 text-xs w-4 h-4 bg-red-400 rounded-full flex 
+                items-center justify-center animate-pulse text-white'>3</div>
+              </div>
+              <PlusCircleIcon className='navBtn' />
+              <UserGroupIcon className='navBtn' />
+              <HeartIcon className='navBtn' />
+              <img src={session.user.image} alt="profile pic" onClick={signOut} className='rounded-full h-10 cursor-pointer'/>
+            </>
+          ) : (
+            <button onClick={signIn}>Sign In</button>
+          )}
+
         </div>
       </div>
     </div>
