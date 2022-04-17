@@ -1,6 +1,7 @@
 import Image from "next/image"
 
 function Story({img, username}) {
+  
   return (
     <div>
         <img src={img} alt="Profile pic" className="rounded-full h-14 w-14 p-[1.5px] border-red-500 border-2 
